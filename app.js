@@ -2,9 +2,7 @@
    RenewGPT - Main Application
    ============================================ */
 
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? '/api'  // Local dev: use proxy
-    : 'https://autosubai.com';  // Production: direct API
+const API_BASE = '/api';
 
 // ============================================
 // PARTICLES BACKGROUND
