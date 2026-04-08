@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gia Hạn GPT Plus - Nâng cấp ChatGPT Plus tự động</title>
+    <meta name="description" content="Dịch vụ gia hạn và nâng cấp ChatGPT Plus tự động, nhanh chóng, an toàn. Hỗ trợ 24/7.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-effects">
+        <div class="bg-gradient"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-glow bg-glow-1"></div>
+        <div class="bg-glow bg-glow-2"></div>
+        <div class="bg-glow bg-glow-3"></div>
+        <canvas id="particles-canvas"></canvas>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo" id="nav-logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">RenewGPT</span>
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="#home" class="nav-link active" data-page="home">Trang chủ</a>
+                <a href="#renew" class="nav-link" data-page="renew">Gia hạn GPT</a>
+                <a href="#lookup" class="nav-link" data-page="lookup">Tra cứu CDK</a>
+                <a href="#quick" class="nav-link" data-page="quick">Kích gói nhanh</a>
+
+            </div>
+            <div class="nav-actions">
+                <a href="https://t.me/ovartorr" target="_blank" class="nav-btn-cta">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                    </svg>
+                    Mua CDK
+                </a>
+                <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-content">
+            <a href="#home" class="mobile-link" data-page="home">🏠 Trang chủ</a>
+            <a href="#renew" class="mobile-link" data-page="renew">💳 Gia hạn GPT</a>
+            <a href="#lookup" class="mobile-link" data-page="lookup">🔍 Tra cứu CDK</a>
+            <a href="#quick" class="mobile-link" data-page="quick">⚡ Kích gói nhanh</a>
+            <a href="https://t.me/ovartorr" target="_blank" class="mobile-link cta">🛒 Mua CDK @ovartorr</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+
+        <!-- ==================== HOME PAGE ==================== -->
+        <section class="page page-home active" id="page-home">
+            <div class="hero">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Hệ thống hoạt động ổn định
+                </div>
+                <h1 class="hero-title">
+                    Nâng cấp <span class="gradient-text">ChatGPT Plus</span><br>
+                    Tự động & Nhanh chóng
+                </h1>
+                <p class="hero-desc">
+                    Dịch vụ gia hạn ChatGPT Plus tự động bằng CDK code. An toàn, bảo mật, xử lý trong vài phút.
+                    Hỗ trợ cả tài khoản mới và gia hạn tài khoản cũ.
+                </p>
+                <div class="hero-actions">
+                    <a href="#renew" class="btn btn-primary btn-lg" data-page="renew">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        Gia hạn ngay
+                    </a>
+                    <a href="#lookup" class="btn btn-glass btn-lg" data-page="lookup">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        Tra cứu CDK
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="15000">0</div>
+                        <div class="stat-label">Đơn hoàn thành</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-value">99.8%</div>
+                        <div class="stat-label">Tỷ lệ thành công</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-value">~2 phút</div>
+                        <div class="stat-label">Thời gian xử lý</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features-section">
+                <div class="section-header">
+                    <h2 class="section-title">Tại sao chọn chúng tôi?</h2>
+                    <p class="section-desc">Giải pháp nâng cấp ChatGPT Plus an toàn và nhanh chóng nhất</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card" data-aos="fade-up">
+                        <div class="feature-icon feature-icon-speed">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        </div>
+                        <h3>Xử lý siêu nhanh</h3>
+                        <p>Đơn hàng được xử lý tự động trong vòng 2-5 phút. Không cần chờ đợi lâu.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon feature-icon-secure">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </div>
+                        <h3>An toàn & Bảo mật</h3>
+                        <p>Hệ thống mã hóa đầu cuối, không lưu trữ thông tin nhạy cảm của bạn.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="feature-icon feature-icon-auto">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                        </div>
+                        <h3>Hoàn toàn tự động</h3>
+                        <p>Quy trình tự động 100%. Chỉ cần nhập CDK và session, hệ thống lo phần còn lại.</p>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="feature-icon feature-icon-support">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <h3>Hỗ trợ 7:00 - 24:00</h3>
+                        <p>Đội ngũ hỗ trợ kỹ thuật sẵn sàng giải đáp mọi thắc mắc của bạn.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How it works -->
+            <div class="steps-section">
+                <div class="section-header">
+                    <h2 class="section-title">Hướng dẫn sử dụng</h2>
+                    <p class="section-desc">Chỉ 3 bước đơn giản để nâng cấp ChatGPT Plus</p>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-content">
+                            <h3>Mua CDK Code</h3>
+                            <p>Liên hệ Bot Telegram để mua CDK code. Mỗi code sử dụng 1 lần duy nhất.</p>
+                            <a href="https://t.me/ovartorr" target="_blank" class="step-link">
+                                Mua CDK ngay →
+                            </a>
+                        </div>
+                    </div>
+                    <div class="step-connector">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-content">
+                            <h3>Lấy Session Data</h3>
+                            <p>Truy cập link bên dưới khi đã đăng nhập ChatGPT để lấy session data.</p>
+                            <a href="https://chatgpt.com/api/auth/session" target="_blank" class="step-link">
+                                Lấy Session →
+                            </a>
+                        </div>
+                    </div>
+                    <div class="step-connector">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-content">
+                            <h3>Nhập & Xác nhận</h3>
+                            <p>Dán CDK code và session data vào form, nhấn xác nhận và chờ kết quả.</p>
+                            <a href="#renew" class="step-link" data-page="renew">
+                                Gia hạn ngay →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Guide -->
+            <div class="video-section">
+                <div class="glass-card video-card">
+                    <div class="video-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <h3>Video hướng dẫn chi tiết</h3>
+                    <p>Xem video hướng dẫn từng bước để thực hiện nhanh chóng và chính xác nhất.</p>
+                    <a href="https://drive.google.com/file/d/1jwMSR5jeYN3M3-MnITNRMUZqvKsC2TQX/view?usp=sharing" target="_blank" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Xem Video
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== RENEW PAGE ==================== -->
+        <section class="page page-renew" id="page-renew">
+            <div class="page-container">
+                <div class="page-header">
+                    <div class="page-icon">💳</div>
+                    <h1 class="page-title">Gia hạn GPT Plus</h1>
+                    <p class="page-desc">Nhập CDK code và session data để nâng cấp tài khoản ChatGPT Plus</p>
+                </div>
+
+                <div class="warning-banner">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                    <span>⚠️ CHỈ DÙNG KHI KHÔNG CÓ GÓI NÀO ĐANG HOẠT ĐỘNG. KHÔNG NÊN ĐÈ GÓI!</span>
+                </div>
+
+                <div class="form-card glass-card">
+                    <!-- Step indicators -->
+                    <div class="form-steps">
+                        <div class="form-step active" data-step="1">
+                            <div class="step-dot">1</div>
+                            <span>CDK Code</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="form-step" data-step="2">
+                            <div class="step-dot">2</div>
+                            <span>Session Data</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="form-step" data-step="3">
+                            <div class="step-dot">3</div>
+                            <span>Xác nhận</span>
+                        </div>
+                    </div>
+
+                    <form id="renew-form" autocomplete="off">
+                        <!-- Step 1: CDK -->
+                        <div class="form-panel active" id="step-1">
+                            <div class="input-group">
+                                <label for="cdk-input">CDK Code <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                    <input type="text" id="cdk-input" placeholder="Nhập CDK code của bạn..." required>
+                                </div>
+                                <div class="cdk-feedback hidden" id="cdk-feedback"></div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-primary btn-block" id="btn-next-1">
+                                    Tiếp tục
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Session -->
+                        <div class="form-panel" id="step-2">
+                            <div class="input-group">
+                                <label for="session-input">Session Data <span class="required">*</span></label>
+                                <div class="session-helper">
+                                    <a href="https://chatgpt.com/api/auth/session" target="_blank" class="helper-link">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                        Lấy Session Data tại đây
+                                    </a>
+                                </div>
+                                <textarea id="session-input" rows="8" placeholder='Dán toàn bộ nội dung JSON từ chatgpt.com/api/auth/session vào đây...' required></textarea>
+                                <div class="input-hint">Truy cập link trên khi đã đăng nhập ChatGPT, copy toàn bộ nội dung trang</div>
+                            </div>
+                            <div class="form-actions dual">
+                                <button type="button" class="btn btn-glass" id="btn-back-2">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                    Quay lại
+                                </button>
+                                <button type="button" class="btn btn-primary" id="btn-next-2">
+                                    Tiếp tục
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Confirm -->
+                        <div class="form-panel" id="step-3">
+                            <div class="confirm-info">
+                                <h3>Xác nhận thông tin</h3>
+                                <div class="confirm-details">
+                                    <div class="confirm-row">
+                                        <span class="confirm-label">CDK Code:</span>
+                                        <span class="confirm-value" id="confirm-cdk">-</span>
+                                    </div>
+                                    <div class="confirm-row">
+                                        <span class="confirm-label">Email:</span>
+                                        <span class="confirm-value" id="confirm-email">-</span>
+                                    </div>
+                                    <div class="confirm-row">
+                                        <span class="confirm-label">Loại tài khoản:</span>
+                                        <span class="confirm-value" id="confirm-plan">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions dual">
+                                <button type="button" class="btn btn-glass" id="btn-back-3">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                    Quay lại
+                                </button>
+                                <button type="submit" class="btn btn-success" id="btn-submit">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                    Xác nhận & Gia hạn
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Processing State -->
+                    <div class="processing-state hidden" id="processing-state">
+                        <div class="processing-animation">
+                            <div class="spinner-ring"></div>
+                            <div class="processing-icon">⚡</div>
+                        </div>
+                        <h3>Đang xử lý yêu cầu</h3>
+                        <p class="processing-msg" id="processing-msg">Hệ thống đang nâng cấp tài khoản của bạn...</p>
+                        <div class="processing-timer">
+                            <span id="processing-time">0:00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Success State -->
+                    <div class="result-state hidden" id="success-state">
+                        <div class="result-icon result-success">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h3>🎉 Nạp thành công!</h3>
+                        <p>Tài khoản của bạn đã được nâng cấp lên ChatGPT Plus</p>
+                        <div class="result-details" id="success-details"></div>
+                        <button class="btn btn-primary" onclick="resetRenewForm()">Thực hiện đơn mới</button>
+                    </div>
+
+                    <!-- Error State -->
+                    <div class="result-state hidden" id="error-state">
+                        <div class="result-icon result-error">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                        </div>
+                        <h3>Nạp thất bại</h3>
+                        <p id="error-message">Đã có lỗi xảy ra</p>
+                        <div class="result-details" id="error-details"></div>
+                        <button class="btn btn-primary" onclick="resetRenewForm()">Thử lại</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== LOOKUP PAGE ==================== -->
+        <section class="page page-lookup" id="page-lookup">
+            <div class="page-container">
+                <div class="page-header">
+                    <div class="page-icon">🔍</div>
+                    <h1 class="page-title">Tra cứu CDK</h1>
+                    <p class="page-desc">Kiểm tra trạng thái CDK code và đơn hàng của bạn</p>
+                </div>
+
+                <div class="form-card glass-card">
+                    <form id="lookup-form" autocomplete="off">
+                        <div class="input-group">
+                            <label for="lookup-cdk">CDK Code</label>
+                            <div class="input-wrapper">
+                                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                                <input type="text" id="lookup-cdk" placeholder="Nhập CDK code cần tra cứu..." required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-lookup">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            Tra cứu
+                        </button>
+                    </form>
+
+                    <!-- Lookup Loading -->
+                    <div class="lookup-loading hidden" id="lookup-loading">
+                        <div class="mini-spinner"></div>
+                        <span>Đang tra cứu, vui lòng đợi...</span>
+                    </div>
+
+                    <!-- Lookup Result -->
+                    <div class="lookup-result hidden" id="lookup-result">
+                        <div class="lookup-result-header" id="lookup-result-header">
+                            <!-- filled by JS -->
+                        </div>
+                        <div class="lookup-result-body" id="lookup-result-body">
+                            <!-- filled by JS -->
+                        </div>
+                        <div class="lookup-cdk-copy">
+                            <span class="copy-label">CDK:</span>
+                            <code id="lookup-cdk-display">-</code>
+                            <button class="btn-copy" id="btn-copy-cdk" title="Sao chép">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== QUICK ACTIVATE PAGE ==================== -->
+        <section class="page page-quick" id="page-quick">
+            <div class="page-container">
+                <div class="page-header">
+                    <div class="page-icon">⚡</div>
+                    <h1 class="page-title">Kích gói nhanh</h1>
+                    <p class="page-desc">Nhập CDK và session trên cùng 1 form, hệ thống xử lý ngay lập tức</p>
+                </div>
+
+                <div class="form-card glass-card">
+                    <form id="quick-form" autocomplete="off">
+                        <div class="input-group">
+                            <label for="quick-cdk">CDK Code <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <input type="text" id="quick-cdk" placeholder="Nhập CDK code..." required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="quick-session">
+                                Session Data <span class="required">*</span>
+                                <a href="https://chatgpt.com/api/auth/session" target="_blank" class="label-link">
+                                    Lấy tại đây ↗
+                                </a>
+                            </label>
+                            <textarea id="quick-session" rows="6" placeholder='Dán JSON session data vào đây...' required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-quick-submit">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            Kích hoạt ngay
+                        </button>
+                    </form>
+
+                    <!-- Quick Processing -->
+                    <div class="processing-state hidden" id="quick-processing">
+                        <div class="processing-animation">
+                            <div class="spinner-ring"></div>
+                            <div class="processing-icon">⚡</div>
+                        </div>
+                        <h3>Đang xử lý kích hoạt</h3>
+                        <p>Vui lòng đợi trong giây lát...</p>
+                        <div class="processing-timer">
+                            <span id="quick-processing-time">0:00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quick-progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Success -->
+                    <div class="result-state hidden" id="quick-success">
+                        <div class="result-icon result-success">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h3>🎉 Kích hoạt thành công!</h3>
+                        <p>Tài khoản đã được nâng cấp ChatGPT Plus</p>
+                        <div class="result-details" id="quick-success-details"></div>
+                        <button class="btn btn-primary" onclick="resetQuickForm()">Kích hoạt đơn khác</button>
+                    </div>
+
+                    <!-- Quick Error -->
+                    <div class="result-state hidden" id="quick-error">
+                        <div class="result-icon result-error">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                        </div>
+                        <h3>Kích hoạt thất bại</h3>
+                        <p id="quick-error-message">Đã có lỗi xảy ra</p>
+                        <button class="btn btn-primary" onclick="resetQuickForm()">Thử lại</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        <span>RenewGPT</span>
+                    </div>
+                    <p>Dịch vụ gia hạn ChatGPT Plus tự động, nhanh chóng và an toàn nhất Việt Nam.</p>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Dịch vụ</h4>
+                    <a href="#renew" data-page="renew">Gia hạn GPT Plus</a>
+                    <a href="#quick" data-page="quick">Kích gói nhanh</a>
+                    <a href="#lookup" data-page="lookup">Tra cứu CDK</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Hỗ trợ</h4>
+                    <a href="https://t.me/ovartorr" target="_blank">Liên hệ @ovartorr</a>
+                    <a href="https://drive.google.com/file/d/1jwMSR5jeYN3M3-MnITNRMUZqvKsC2TQX/view" target="_blank">Video hướng dẫn</a>
+                    <a href="https://chatgpt.com/api/auth/session" target="_blank">Lấy Session Data</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 RenewGPT. Tất cả quyền được bảo lưu.</p>
+                <p class="footer-support">Hỗ trợ: 7:00 - 24:00 hàng ngày</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
