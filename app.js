@@ -2,7 +2,7 @@
    RenewGPT - Main Application
    ============================================ */
 
-const API_BASE = '/api';
+const API_BASE = 'https://autosubai.com';
 
 // ============================================
 // PARTICLES BACKGROUND
