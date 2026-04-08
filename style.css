@@ -1586,6 +1586,169 @@ textarea:focus {
 }
 
 /* ============================================
+   LOOKUP MULTI-CDK
+   ============================================ */
+
+.page-container-wide {
+    max-width: 900px;
+}
+
+.lookup-result-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.lookup-copy-section {
+    margin-bottom: 20px;
+}
+
+.lookup-copy-label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.lookup-copy-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.btn-copy-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    font-family: inherit;
+}
+
+.btn-copy-filter:hover {
+    background: var(--bg-glass-hover);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+/* Stats Cards */
+.lookup-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.lookup-stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--bg-glass);
+}
+
+.lookup-stat-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.lookup-stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.lookup-stat-total .lookup-stat-label { color: var(--accent-blue); }
+.lookup-stat-total .lookup-stat-value { color: var(--text-primary); }
+.lookup-stat-total { border-color: rgba(59, 130, 246, 0.2); background: rgba(59, 130, 246, 0.05); }
+
+.lookup-stat-used .lookup-stat-label { color: var(--accent-orange); }
+.lookup-stat-used .lookup-stat-value { color: var(--text-primary); }
+.lookup-stat-used { border-color: rgba(245, 158, 11, 0.2); background: rgba(245, 158, 11, 0.05); }
+
+.lookup-stat-available .lookup-stat-label { color: var(--accent-primary); }
+.lookup-stat-available .lookup-stat-value { color: var(--text-primary); }
+.lookup-stat-available { border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05); }
+
+.lookup-stat-invalid .lookup-stat-label { color: var(--accent-red); }
+.lookup-stat-invalid .lookup-stat-value { color: var(--text-primary); }
+.lookup-stat-invalid { border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.05); }
+
+/* Table */
+.lookup-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+.lookup-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.lookup-table thead {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.lookup-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+}
+
+.lookup-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    vertical-align: middle;
+}
+
+.lookup-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.lookup-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.lookup-table .cdk-code {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.lookup-table .status-badge {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+
+/* ============================================
    UTILITIES
    ============================================ */
 
@@ -1636,6 +1799,14 @@ textarea:focus {
     .warranty-actions .btn { width: 100%; }
 
     .toast { max-width: calc(100vw - 32px); }
+
+    .lookup-stats { grid-template-columns: repeat(2, 1fr); }
+    .lookup-stat-value { font-size: 1.4rem; }
+    .lookup-copy-buttons { gap: 6px; }
+    .btn-copy-filter { font-size: 0.75rem; padding: 6px 10px; }
+
+    .lookup-table th,
+    .lookup-table td { padding: 10px 10px; font-size: 0.8rem; }
 }
 
 @media (max-width: 480px) {

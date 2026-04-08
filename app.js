@@ -624,90 +624,131 @@ window.resetQuickForm = function () {
 };
 
 // ============================================
-// LOOKUP FORM
+// LOOKUP FORM (Multi-CDK)
 // ============================================
+let lookupResults = [];
+
 function initLookupForm() {
     const lookupForm = document.getElementById('lookup-form');
-    const btnCopy = document.getElementById('btn-copy-cdk');
 
     lookupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const cdk = document.getElementById('lookup-cdk').value.trim();
-        if (!cdk) {
+        const raw = document.getElementById('lookup-cdk').value.trim();
+        if (!raw) {
             showToast('Vui lòng nhập CDK code', 'error');
             return;
         }
 
-        // Show loading
+        const cdkList = raw.split('\n').map(s => s.trim()).filter(Boolean);
+        const uniqueCdks = [...new Set(cdkList)];
+
+        if (uniqueCdks.length === 0) {
+            showToast('Vui lòng nhập ít nhất 1 mã CDK', 'error');
+            return;
+        }
+
         document.getElementById('lookup-loading').classList.remove('hidden');
         document.getElementById('lookup-result').classList.add('hidden');
         document.getElementById('btn-lookup').disabled = true;
 
-        try {
-            const response = await fetch(`${API_BASE}/check`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ uniqueCode: cdk })
-            });
+        lookupResults = [];
 
-            const data = await response.json();
-
-            if (response.ok) {
-                displayLookupResult(data, cdk);
-            } else {
-                showToast(data.message || 'Không tìm thấy CDK', 'error');
+        const checkPromises = uniqueCdks.map(async (cdk) => {
+            try {
+                const response = await fetch(`${API_BASE}/check`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ uniqueCode: cdk })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    return { cdk, ...data };
+                } else {
+                    return { cdk, status: 'invalid', message: data.message || 'Không tìm thấy' };
+                }
+            } catch {
+                return { cdk, status: 'invalid', message: 'Lỗi kết nối' };
             }
-        } catch (error) {
-            showToast('Lỗi kết nối. Vui lòng thử lại.', 'error');
-        } finally {
-            document.getElementById('lookup-loading').classList.add('hidden');
-            document.getElementById('btn-lookup').disabled = false;
-        }
+        });
+
+        lookupResults = await Promise.all(checkPromises);
+
+        document.getElementById('lookup-loading').classList.add('hidden');
+        document.getElementById('btn-lookup').disabled = false;
+
+        displayMultiLookupResults(lookupResults);
     });
 
-    btnCopy.addEventListener('click', () => {
-        const cdkText = document.getElementById('lookup-cdk-display').textContent;
-        navigator.clipboard.writeText(cdkText).then(() => {
-            showToast('Đã sao chép CDK!', 'success');
-        }).catch(() => {
-            showToast('Không thể sao chép', 'error');
+    document.querySelectorAll('.btn-copy-filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filter = btn.getAttribute('data-filter');
+            let cdks = [];
+            if (filter === 'all') {
+                cdks = lookupResults.map(r => r.cdk);
+            } else if (filter === 'available') {
+                cdks = lookupResults.filter(r => r.status === 'available').map(r => r.cdk);
+            } else if (filter === 'used') {
+                cdks = lookupResults.filter(r => ['completed', 'processing', 'pending'].includes(r.status)).map(r => r.cdk);
+            } else if (filter === 'invalid') {
+                cdks = lookupResults.filter(r => r.status === 'invalid' || r.status === 'failed').map(r => r.cdk);
+            }
+
+            if (cdks.length === 0) {
+                showToast('Không có CDK nào thuộc nhóm này', 'info');
+                return;
+            }
+
+            navigator.clipboard.writeText(cdks.join('\n')).then(() => {
+                showToast(`Đã sao chép ${cdks.length} mã CDK!`, 'success');
+            }).catch(() => {
+                showToast('Không thể sao chép', 'error');
+            });
         });
     });
 }
 
-function displayLookupResult(data, cdk) {
-    const header = document.getElementById('lookup-result-header');
-    const body = document.getElementById('lookup-result-body');
-
-    // Status badge
+function displayMultiLookupResults(results) {
     const statusMap = {
-        available: { label: '🟢 Có sẵn', class: 'status-available' },
-        processing: { label: '🟡 Đang xử lý', class: 'status-processing' },
-        completed: { label: '✅ Hoàn thành', class: 'status-completed' },
-        failed: { label: '❌ Thất bại', class: 'status-failed' },
-        pending: { label: '🟣 Chờ xử lý', class: 'status-pending' }
+        available: { label: 'Chưa dùng', class: 'status-available', group: 'available' },
+        processing: { label: 'Đang xử lý', class: 'status-processing', group: 'used' },
+        completed: { label: 'Đã sử dụng', class: 'status-completed', group: 'used' },
+        failed: { label: 'Thất bại', class: 'status-failed', group: 'invalid' },
+        pending: { label: 'Chờ xử lý', class: 'status-pending', group: 'used' },
+        invalid: { label: 'Không hợp lệ', class: 'status-failed', group: 'invalid' }
     };
 
-    const status = statusMap[data.status] || { label: data.status, class: 'status-pending' };
+    let totalCount = results.length;
+    let usedCount = 0;
+    let availableCount = 0;
+    let invalidCount = 0;
 
-    header.innerHTML = `
-        <span class="status-badge ${status.class}">${status.label}</span>
-        <span style="color: var(--text-muted); font-size: 0.85rem;">CDK: ${maskCDK(cdk)}</span>
-    `;
+    results.forEach(r => {
+        const info = statusMap[r.status] || { group: 'invalid' };
+        if (info.group === 'used') usedCount++;
+        else if (info.group === 'available') availableCount++;
+        else invalidCount++;
+    });
 
-    let rows = '';
-    rows += `<div class="lookup-row"><span class="label">Trạng thái</span><span class="value">${status.label}</span></div>`;
-    if (data.email) rows += `<div class="lookup-row"><span class="label">Email</span><span class="value">${data.email}</span></div>`;
-    if (data.notes) rows += `<div class="lookup-row"><span class="label">Ghi chú</span><span class="value">${data.notes}</span></div>`;
-    if (data.error) rows += `<div class="lookup-row"><span class="label">Lỗi</span><span class="value" style="color: var(--accent-red)">${data.message || data.error}</span></div>`;
+    document.getElementById('stat-total').textContent = totalCount;
+    document.getElementById('stat-used').textContent = usedCount;
+    document.getElementById('stat-available').textContent = availableCount;
+    document.getElementById('stat-invalid').textContent = invalidCount;
 
-    body.innerHTML = rows;
+    const tbody = document.getElementById('lookup-table-body');
+    tbody.innerHTML = results.map((r, i) => {
+        const info = statusMap[r.status] || { label: r.status, class: 'status-pending' };
+        const email = r.email || '-';
+        const time = r.usedAt || r.completedAt || '-';
+        return `<tr>
+            <td>${i + 1}</td>
+            <td><code class="cdk-code">${r.cdk}</code></td>
+            <td><span class="status-badge ${info.class}">${info.label}</span></td>
+            <td>${time}</td>
+            <td>${email}</td>
+        </tr>`;
+    }).join('');
 
-    document.getElementById('lookup-cdk-display').textContent = cdk;
     document.getElementById('lookup-result').classList.remove('hidden');
 }
 

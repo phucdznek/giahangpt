@@ -363,25 +363,22 @@
 
         <!-- ==================== LOOKUP PAGE ==================== -->
         <section class="page page-lookup" id="page-lookup">
-            <div class="page-container">
+            <div class="page-container page-container-wide">
                 <div class="page-header">
                     <div class="page-icon">🔍</div>
                     <h1 class="page-title">Tra cứu CDK</h1>
-                    <p class="page-desc">Kiểm tra trạng thái CDK code và đơn hàng của bạn</p>
+                    <p class="page-desc">Kiểm tra trạng thái CDK code và đơn hàng của bạn (hỗ trợ nhiều mã)</p>
                 </div>
 
                 <div class="form-card glass-card">
                     <form id="lookup-form" autocomplete="off">
                         <div class="input-group">
-                            <label for="lookup-cdk">CDK Code</label>
-                            <div class="input-wrapper">
-                                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                                <input type="text" id="lookup-cdk" placeholder="Nhập CDK code cần tra cứu..." required>
-                            </div>
+                            <label for="lookup-cdk">Nhập CDK (hỗ trợ nhiều mã, mỗi dòng một mã)</label>
+                            <textarea id="lookup-cdk" rows="4" placeholder="Nhập CDK code cần tra cứu...&#10;Mỗi dòng một mã CDK&#10;Ví dụ:&#10;ABC-1234-XYZ&#10;DEF-5678-UVW" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block" id="btn-lookup">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                            Tra cứu
+                            Tra cứu trạng thái
                         </button>
                     </form>
 
@@ -393,18 +390,66 @@
 
                     <!-- Lookup Result -->
                     <div class="lookup-result hidden" id="lookup-result">
-                        <div class="lookup-result-header" id="lookup-result-header">
-                            <!-- filled by JS -->
+                        <h3 class="lookup-result-title">Kết quả tra cứu</h3>
+
+                        <!-- Copy Buttons -->
+                        <div class="lookup-copy-section">
+                            <span class="lookup-copy-label">Sao chép CDK nhanh</span>
+                            <div class="lookup-copy-buttons">
+                                <button class="btn-copy-filter" data-filter="all" title="Sao chép tất cả CDK">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    Sao chép tất cả CDK
+                                </button>
+                                <button class="btn-copy-filter" data-filter="available" title="Sao chép CDK chưa dùng">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    Sao chép CDK chưa dùng
+                                </button>
+                                <button class="btn-copy-filter" data-filter="used" title="Sao chép CDK đã dùng">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    Sao chép CDK đã dùng
+                                </button>
+                                <button class="btn-copy-filter" data-filter="invalid" title="Sao chép CDK không hợp lệ">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    Sao chép CDK không hợp lệ
+                                </button>
+                            </div>
                         </div>
-                        <div class="lookup-result-body" id="lookup-result-body">
-                            <!-- filled by JS -->
+
+                        <!-- Stats -->
+                        <div class="lookup-stats" id="lookup-stats">
+                            <div class="lookup-stat-card lookup-stat-total">
+                                <span class="lookup-stat-label">TỔNG SỐ</span>
+                                <span class="lookup-stat-value" id="stat-total">0</span>
+                            </div>
+                            <div class="lookup-stat-card lookup-stat-used">
+                                <span class="lookup-stat-label">ĐÃ DÙNG</span>
+                                <span class="lookup-stat-value" id="stat-used">0</span>
+                            </div>
+                            <div class="lookup-stat-card lookup-stat-available">
+                                <span class="lookup-stat-label">CHƯA DÙNG</span>
+                                <span class="lookup-stat-value" id="stat-available">0</span>
+                            </div>
+                            <div class="lookup-stat-card lookup-stat-invalid">
+                                <span class="lookup-stat-label">KHÔNG HỢP LỆ</span>
+                                <span class="lookup-stat-value" id="stat-invalid">0</span>
+                            </div>
                         </div>
-                        <div class="lookup-cdk-copy">
-                            <span class="copy-label">CDK:</span>
-                            <code id="lookup-cdk-display">-</code>
-                            <button class="btn-copy" id="btn-copy-cdk" title="Sao chép">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                            </button>
+
+                        <!-- Table -->
+                        <div class="lookup-table-wrapper">
+                            <table class="lookup-table" id="lookup-table">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>MÃ CDK</th>
+                                        <th>TRẠNG THÁI</th>
+                                        <th>THỜI GIAN DÙNG</th>
+                                        <th>TÀI KHOẢN</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lookup-table-body">
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
