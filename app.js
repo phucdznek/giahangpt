@@ -654,7 +654,7 @@ function initLookupForm() {
 
         lookupResults = [];
 
-        const checkPromises = uniqueCdks.map(async (cdk) => {
+            const checkPromises = uniqueCdks.map(async (cdk) => {
             try {
                 const response = await fetch(`${API_BASE}/check`, {
                     method: 'POST',
@@ -708,6 +708,17 @@ function initLookupForm() {
     });
 }
 
+function formatVnTime(timeStr) {
+    if (!timeStr || timeStr === '-') return '-';
+    try {
+        let d = new Date(timeStr.replace(' ', 'T') + '+08:00');
+        if (isNaN(d.getTime())) return timeStr;
+        return d.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', hour12: false });
+    } catch {
+        return timeStr;
+    }
+}
+
 function displayMultiLookupResults(results) {
     const statusMap = {
         available: { label: 'Chưa dùng', class: 'status-available', group: 'available' },
@@ -738,14 +749,14 @@ function displayMultiLookupResults(results) {
     const tbody = document.getElementById('lookup-table-body');
     tbody.innerHTML = results.map((r, i) => {
         const info = statusMap[r.status] || { label: r.status, class: 'status-pending' };
-        const email = r.email || '-';
-        const time = r.usedAt || r.completedAt || '-';
+        const account = r.account || r.email || '-';
+        const time = formatVnTime(r.usedAt);
         return `<tr>
             <td>${i + 1}</td>
             <td><code class="cdk-code">${r.cdk}</code></td>
             <td><span class="status-badge ${info.class}">${info.label}</span></td>
             <td>${time}</td>
-            <td>${email}</td>
+            <td>${account}</td>
         </tr>`;
     }).join('');
 
