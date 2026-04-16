@@ -5,6 +5,168 @@
 const API_BASE = '/api';
 
 // ============================================
+// i18n - INTERNATIONALIZATION
+// ============================================
+let currentLang = localStorage.getItem('lang') || 'vi';
+
+const translations = {
+    vi: {
+        nav_home: 'Trang chủ', nav_renew: 'Gia hạn GPT', nav_lookup: 'Tra cứu CDK', nav_quick: 'Kích gói nhanh',
+        nav_buy_cdk: 'Mua CDK', nav_buy_cdk_full: 'Mua CDK @ovartorr',
+        hero_badge: 'Hệ thống hoạt động ổn định',
+        hero_title: 'Nâng cấp <span class="gradient-text">ChatGPT Plus</span><br>Tự động & Nhanh chóng',
+        hero_desc: 'Dịch vụ gia hạn ChatGPT Plus tự động bằng CDK code. An toàn, bảo mật, xử lý trong vài phút. Hỗ trợ cả tài khoản mới và gia hạn tài khoản cũ.',
+        hero_btn_renew: 'Gia hạn ngay', hero_btn_lookup: 'Tra cứu CDK',
+        stat_orders: 'Đơn hoàn thành', stat_success: 'Tỷ lệ thành công', stat_time: 'Thời gian xử lý', stat_time_value: '~2 phút',
+        feat_title: 'Tại sao chọn chúng tôi?', feat_desc: 'Giải pháp nâng cấp ChatGPT Plus an toàn và nhanh chóng nhất',
+        feat_fast: 'Xử lý siêu nhanh', feat_fast_desc: 'Đơn hàng được xử lý tự động trong vòng 2-5 phút. Không cần chờ đợi lâu.',
+        feat_secure: 'An toàn & Bảo mật', feat_secure_desc: 'Hệ thống mã hóa đầu cuối, không lưu trữ thông tin nhạy cảm của bạn.',
+        feat_auto: 'Hoàn toàn tự động', feat_auto_desc: 'Quy trình tự động 100%. Chỉ cần nhập CDK và session, hệ thống lo phần còn lại.',
+        feat_support: 'Hỗ trợ 7:00 - 24:00', feat_support_desc: 'Đội ngũ hỗ trợ kỹ thuật sẵn sàng giải đáp mọi thắc mắc của bạn.',
+        steps_title: 'Hướng dẫn sử dụng', steps_desc: 'Chỉ 3 bước đơn giản để nâng cấp ChatGPT Plus',
+        step1_title: 'Mua CDK Code', step1_desc: 'Liên hệ Bot Telegram để mua CDK code. Mỗi code sử dụng 1 lần duy nhất.', step1_link: 'Mua CDK ngay →',
+        step2_title: 'Lấy Session Data', step2_desc: 'Truy cập link bên dưới khi đã đăng nhập ChatGPT để lấy session data.', step2_link: 'Lấy Session →',
+        step3_title: 'Nhập & Xác nhận', step3_desc: 'Dán CDK code và session data vào form, nhấn xác nhận và chờ kết quả.', step3_link: 'Gia hạn ngay →',
+        video_title: 'Video hướng dẫn chi tiết', video_desc: 'Xem video hướng dẫn từng bước để thực hiện nhanh chóng và chính xác nhất.', video_btn: 'Xem Video',
+        renew_title: 'Gia hạn GPT Plus', renew_desc: 'Nhập CDK code và session data để nâng cấp tài khoản ChatGPT Plus',
+        renew_warning: '⚠️ CHỈ DÙNG KHI KHÔNG CÓ GÓI NÀO ĐANG HOẠT ĐỘNG. KHÔNG NÊN ĐÈ GÓI!',
+        renew_step3: 'Xác nhận', renew_cdk_ph: 'Nhập CDK code của bạn...',
+        renew_get_session: 'Lấy Session Data tại đây',
+        renew_session_ph: 'Dán toàn bộ nội dung JSON từ chatgpt.com/api/auth/session vào đây...',
+        renew_session_hint: 'Truy cập link trên khi đã đăng nhập ChatGPT, copy toàn bộ nội dung trang',
+        renew_confirm_title: 'Xác nhận thông tin', renew_plan_type: 'Loại tài khoản:',
+        renew_submit: 'Xác nhận & Gia hạn',
+        btn_next: 'Tiếp tục', btn_back: 'Quay lại',
+        processing_title: 'Đang xử lý yêu cầu', processing_msg: 'Hệ thống đang nâng cấp tài khoản của bạn...',
+        success_title: '🎉 Nạp thành công!', success_msg: 'Tài khoản của bạn đã được nâng cấp lên ChatGPT Plus', success_btn: 'Thực hiện đơn mới',
+        error_title: 'Nạp thất bại', error_msg: 'Đã có lỗi xảy ra', error_btn: 'Thử lại',
+        lookup_title: 'Tra cứu CDK', lookup_desc: 'Kiểm tra trạng thái CDK code và đơn hàng của bạn (hỗ trợ nhiều mã)',
+        lookup_label: 'Nhập CDK (hỗ trợ nhiều mã, mỗi dòng một mã)',
+        lookup_ph: 'Nhập CDK code cần tra cứu...\nMỗi dòng một mã CDK\nVí dụ:\nABC-1234-XYZ\nDEF-5678-UVW',
+        lookup_btn: 'Tra cứu trạng thái', lookup_loading: 'Đang tra cứu, vui lòng đợi...',
+        lookup_result_title: 'Kết quả tra cứu', lookup_copy_label: 'Sao chép CDK nhanh',
+        copy_all: 'Sao chép tất cả CDK', copy_unused: 'Sao chép CDK chưa dùng', copy_used: 'Sao chép CDK đã dùng', copy_invalid: 'Sao chép CDK không hợp lệ',
+        stat_total: 'TỔNG SỐ', stat_used: 'ĐÃ DÙNG', stat_available: 'CHƯA DÙNG', stat_invalid: 'KHÔNG HỢP LỆ',
+        th_no: 'STT', th_cdk: 'MÃ CDK', th_status: 'TRẠNG THÁI', th_time: 'THỜI GIAN DÙNG', th_account: 'TÀI KHOẢN',
+        status_available: 'Chưa dùng', status_processing: 'Đang xử lý', status_completed: 'Đã sử dụng', status_failed: 'Thất bại', status_pending: 'Chờ xử lý', status_invalid: 'Không hợp lệ',
+        quick_title: 'Kích gói nhanh', quick_desc: 'Nhập CDK và session trên cùng 1 form, hệ thống xử lý ngay lập tức',
+        quick_cdk_ph: 'Nhập CDK code...', quick_get_here: 'Lấy tại đây ↗', quick_session_ph: 'Dán JSON session data vào đây...',
+        quick_btn: 'Kích hoạt ngay', quick_processing: 'Đang xử lý kích hoạt', quick_wait: 'Vui lòng đợi trong giây lát...',
+        quick_success: '🎉 Kích hoạt thành công!', quick_success_msg: 'Tài khoản đã được nâng cấp ChatGPT Plus', quick_new: 'Kích hoạt đơn khác',
+        quick_fail: 'Kích hoạt thất bại',
+        footer_brand_desc: 'Dịch vụ gia hạn ChatGPT Plus tự động, nhanh chóng và an toàn nhất Việt Nam.',
+        footer_services: 'Dịch vụ', footer_renew: 'Gia hạn GPT Plus', footer_support: 'Hỗ trợ',
+        footer_contact: 'Liên hệ @ovartorr', footer_video: 'Video hướng dẫn', footer_session: 'Lấy Session Data',
+        footer_copyright: '© 2025 RenewGPT. Tất cả quyền được bảo lưu.', footer_hours: 'Hỗ trợ: 7:00 - 24:00 hàng ngày',
+        toast_copied: 'Đã sao chép {n} mã CDK!', toast_none: 'Không có CDK nào thuộc nhóm này',
+        toast_enter_cdk: 'Vui lòng nhập CDK code', toast_enter_session: 'Vui lòng nhập Session Data',
+        toast_session_token: 'Session data phải chứa accessToken', toast_session_json: 'Session data không đúng định dạng JSON',
+        toast_enter_all: 'Vui lòng nhập đầy đủ thông tin', toast_upgrade_ok: 'Nâng cấp thành công! 🎉', toast_error: 'Có lỗi xảy ra',
+        toast_copy_ok: 'Đã sao chép CDK!', toast_copy_fail: 'Không thể sao chép',
+    },
+    en: {
+        nav_home: 'Home', nav_renew: 'Renew GPT', nav_lookup: 'Check CDK', nav_quick: 'Quick Activate',
+        nav_buy_cdk: 'Buy CDK', nav_buy_cdk_full: 'Buy CDK @ovartorr',
+        hero_badge: 'System running stable',
+        hero_title: 'Upgrade <span class="gradient-text">ChatGPT Plus</span><br>Auto & Fast',
+        hero_desc: 'Automatic ChatGPT Plus renewal service using CDK code. Safe, secure, processed in minutes. Supports both new and existing accounts.',
+        hero_btn_renew: 'Renew Now', hero_btn_lookup: 'Check CDK',
+        stat_orders: 'Orders Completed', stat_success: 'Success Rate', stat_time: 'Processing Time', stat_time_value: '~2 min',
+        feat_title: 'Why Choose Us?', feat_desc: 'The safest and fastest ChatGPT Plus upgrade solution',
+        feat_fast: 'Super Fast', feat_fast_desc: 'Orders are automatically processed within 2-5 minutes. No long waits.',
+        feat_secure: 'Safe & Secure', feat_secure_desc: 'End-to-end encryption system, your sensitive information is never stored.',
+        feat_auto: 'Fully Automated', feat_auto_desc: '100% automated process. Just enter CDK and session, the system handles the rest.',
+        feat_support: 'Support 7:00 - 24:00', feat_support_desc: 'Technical support team ready to answer all your questions.',
+        steps_title: 'How to Use', steps_desc: 'Just 3 simple steps to upgrade ChatGPT Plus',
+        step1_title: 'Buy CDK Code', step1_desc: 'Contact Telegram Bot to buy CDK code. Each code is single-use only.', step1_link: 'Buy CDK Now →',
+        step2_title: 'Get Session Data', step2_desc: 'Visit the link below while logged into ChatGPT to get session data.', step2_link: 'Get Session →',
+        step3_title: 'Enter & Confirm', step3_desc: 'Paste CDK code and session data into the form, confirm and wait for results.', step3_link: 'Renew Now →',
+        video_title: 'Detailed Video Guide', video_desc: 'Watch the step-by-step video guide for the quickest and most accurate process.', video_btn: 'Watch Video',
+        renew_title: 'Renew GPT Plus', renew_desc: 'Enter CDK code and session data to upgrade your ChatGPT Plus account',
+        renew_warning: '⚠️ USE ONLY WHEN NO PLAN IS ACTIVE. DO NOT STACK PLANS!',
+        renew_step3: 'Confirm', renew_cdk_ph: 'Enter your CDK code...',
+        renew_get_session: 'Get Session Data here',
+        renew_session_ph: 'Paste the full JSON content from chatgpt.com/api/auth/session here...',
+        renew_session_hint: 'Visit the link above while logged into ChatGPT, copy all page content',
+        renew_confirm_title: 'Confirm Information', renew_plan_type: 'Account Type:',
+        renew_submit: 'Confirm & Renew',
+        btn_next: 'Next', btn_back: 'Back',
+        processing_title: 'Processing Request', processing_msg: 'System is upgrading your account...',
+        success_title: '🎉 Success!', success_msg: 'Your account has been upgraded to ChatGPT Plus', success_btn: 'New Order',
+        error_title: 'Failed', error_msg: 'An error occurred', error_btn: 'Try Again',
+        lookup_title: 'Check CDK', lookup_desc: 'Check CDK code status and your orders (supports multiple codes)',
+        lookup_label: 'Enter CDK (multiple codes supported, one per line)',
+        lookup_ph: 'Enter CDK code to check...\nOne code per line\nExample:\nABC-1234-XYZ\nDEF-5678-UVW',
+        lookup_btn: 'Check Status', lookup_loading: 'Checking, please wait...',
+        lookup_result_title: 'Results', lookup_copy_label: 'Quick Copy CDK',
+        copy_all: 'Copy All CDK', copy_unused: 'Copy Unused CDK', copy_used: 'Copy Used CDK', copy_invalid: 'Copy Invalid CDK',
+        stat_total: 'TOTAL', stat_used: 'USED', stat_available: 'UNUSED', stat_invalid: 'INVALID',
+        th_no: 'NO.', th_cdk: 'CDK CODE', th_status: 'STATUS', th_time: 'USED AT', th_account: 'ACCOUNT',
+        status_available: 'Unused', status_processing: 'Processing', status_completed: 'Used', status_failed: 'Failed', status_pending: 'Pending', status_invalid: 'Invalid',
+        quick_title: 'Quick Activate', quick_desc: 'Enter CDK and session in one form, system processes immediately',
+        quick_cdk_ph: 'Enter CDK code...', quick_get_here: 'Get here ↗', quick_session_ph: 'Paste JSON session data here...',
+        quick_btn: 'Activate Now', quick_processing: 'Processing Activation', quick_wait: 'Please wait a moment...',
+        quick_success: '🎉 Activation Successful!', quick_success_msg: 'Account has been upgraded to ChatGPT Plus', quick_new: 'Activate Another',
+        quick_fail: 'Activation Failed',
+        footer_brand_desc: 'Automatic ChatGPT Plus renewal service, fast and secure.',
+        footer_services: 'Services', footer_renew: 'Renew GPT Plus', footer_support: 'Support',
+        footer_contact: 'Contact @ovartorr', footer_video: 'Video Guide', footer_session: 'Get Session Data',
+        footer_copyright: '© 2025 RenewGPT. All rights reserved.', footer_hours: 'Support: 7:00 AM - 12:00 AM daily',
+        toast_copied: 'Copied {n} CDK codes!', toast_none: 'No CDK in this category',
+        toast_enter_cdk: 'Please enter CDK code', toast_enter_session: 'Please enter Session Data',
+        toast_session_token: 'Session data must contain accessToken', toast_session_json: 'Session data is not valid JSON',
+        toast_enter_all: 'Please fill in all fields', toast_upgrade_ok: 'Upgrade successful! 🎉', toast_error: 'An error occurred',
+        toast_copy_ok: 'CDK copied!', toast_copy_fail: 'Cannot copy',
+    }
+};
+
+function t(key) {
+    return (translations[currentLang] && translations[currentLang][key]) || translations.vi[key] || key;
+}
+
+function applyLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            el.textContent = translations[lang][key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (translations[lang] && translations[lang][key]) {
+            el.innerHTML = translations[lang][key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (translations[lang] && translations[lang][key]) {
+            el.placeholder = translations[lang][key];
+        }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+}
+
+function initLanguageSwitcher() {
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            applyLanguage(lang);
+        });
+    });
+
+    applyLanguage(currentLang);
+}
+
+// ============================================
 // PARTICLES BACKGROUND
 // ============================================
 function initParticles() {
@@ -721,12 +883,12 @@ function formatVnTime(timeStr) {
 
 function displayMultiLookupResults(results) {
     const statusMap = {
-        available: { label: 'Chưa dùng', class: 'status-available', group: 'available' },
-        processing: { label: 'Đang xử lý', class: 'status-processing', group: 'used' },
-        completed: { label: 'Đã sử dụng', class: 'status-completed', group: 'used' },
-        failed: { label: 'Thất bại', class: 'status-failed', group: 'invalid' },
-        pending: { label: 'Chờ xử lý', class: 'status-pending', group: 'used' },
-        invalid: { label: 'Không hợp lệ', class: 'status-failed', group: 'invalid' }
+        available: { label: t('status_available'), class: 'status-available', group: 'available' },
+        processing: { label: t('status_processing'), class: 'status-processing', group: 'used' },
+        completed: { label: t('status_completed'), class: 'status-completed', group: 'used' },
+        failed: { label: t('status_failed'), class: 'status-failed', group: 'invalid' },
+        pending: { label: t('status_pending'), class: 'status-pending', group: 'used' },
+        invalid: { label: t('status_invalid'), class: 'status-failed', group: 'invalid' }
     };
 
     let totalCount = results.length;
@@ -862,6 +1024,7 @@ function initInputEnhancements() {
 // INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
+    initLanguageSwitcher();
     initParticles();
     initNavigation();
     initRenewForm();
