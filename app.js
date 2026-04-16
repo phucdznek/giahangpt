@@ -63,6 +63,19 @@ const translations = {
         toast_session_token: 'Session data phải chứa accessToken', toast_session_json: 'Session data không đúng định dạng JSON',
         toast_enter_all: 'Vui lòng nhập đầy đủ thông tin', toast_upgrade_ok: 'Nâng cấp thành công! 🎉', toast_error: 'Có lỗi xảy ra',
         toast_copy_ok: 'Đã sao chép CDK!', toast_copy_fail: 'Không thể sao chép',
+        cdk_checking: 'Đang xác minh mã CDK...', cdk_btn_checking: 'Đang kiểm tra...',
+        cdk_valid: '✅ Mã CDK hợp lệ và chưa sử dụng.',
+        cdk_invalid: '❌ Mã CDK không hợp lệ hoặc không tồn tại.',
+        cdk_used_completed: '⚠️ Mã CDK này đã được sử dụng.',
+        cdk_used_processing: '⚠️ Mã CDK này đang được xử lý.',
+        cdk_used_pending: '⚠️ Mã CDK này đang chờ xử lý.',
+        cdk_used_default: '⚠️ Mã CDK đã được sử dụng.',
+        cdk_failed: '⚠️ Mã CDK này đã xử lý thất bại trước đó. Liên hệ hỗ trợ.',
+        cdk_verify_fail: '❌ Không thể xác minh mã CDK. Vui lòng thử lại.',
+        cdk_conn_error: '❌ Lỗi kết nối. Vui lòng thử lại.',
+        poll_waiting: 'Đơn hàng đang được xử lý, vui lòng chờ...',
+        poll_timeout: 'Hết thời gian chờ. Vui lòng kiểm tra trạng thái đơn hàng qua mục Tra cứu CDK.',
+        submit_error: 'Có lỗi xảy ra khi gửi yêu cầu',
     },
     en: {
         nav_home: 'Home', nav_renew: 'Renew GPT', nav_lookup: 'Check CDK', nav_quick: 'Quick Activate',
@@ -117,6 +130,19 @@ const translations = {
         toast_session_token: 'Session data must contain accessToken', toast_session_json: 'Session data is not valid JSON',
         toast_enter_all: 'Please fill in all fields', toast_upgrade_ok: 'Upgrade successful! 🎉', toast_error: 'An error occurred',
         toast_copy_ok: 'CDK copied!', toast_copy_fail: 'Cannot copy',
+        cdk_checking: 'Verifying CDK code...', cdk_btn_checking: 'Checking...',
+        cdk_valid: '✅ CDK code is valid and unused.',
+        cdk_invalid: '❌ CDK code is invalid or does not exist.',
+        cdk_used_completed: '⚠️ This CDK code has already been used.',
+        cdk_used_processing: '⚠️ This CDK code is being processed.',
+        cdk_used_pending: '⚠️ This CDK code is pending.',
+        cdk_used_default: '⚠️ CDK code has been used.',
+        cdk_failed: '⚠️ This CDK code failed previously. Contact support.',
+        cdk_verify_fail: '❌ Cannot verify CDK code. Please try again.',
+        cdk_conn_error: '❌ Connection error. Please try again.',
+        poll_waiting: 'Order is being processed, please wait...',
+        poll_timeout: 'Timeout. Please check order status via Check CDK.',
+        submit_error: 'An error occurred while submitting',
     }
 };
 
@@ -381,19 +407,18 @@ function initRenewForm() {
     btnNext1.addEventListener('click', async () => {
         const cdk = document.getElementById('cdk-input').value.trim();
         if (!cdk) {
-            showToast('Vui lòng nhập CDK code', 'error');
+            showToast(t('toast_enter_cdk'), 'error');
             document.getElementById('cdk-input').focus();
             return;
         }
 
-        // Check CDK status first
         btnNext1.disabled = true;
-        btnNext1.innerHTML = '<span class="mini-spinner" style="width:18px;height:18px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:8px;"></span> Đang kiểm tra...';
+        btnNext1.innerHTML = '<span class="mini-spinner" style="width:18px;height:18px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:8px;"></span> ' + t('cdk_btn_checking');
         
         const cdkFeedback = document.getElementById('cdk-feedback');
         cdkFeedback.className = 'cdk-feedback';
         cdkFeedback.classList.remove('hidden');
-        cdkFeedback.innerHTML = '<span class="mini-spinner" style="width:16px;height:16px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px;"></span> Đang xác minh mã CDK...';
+        cdkFeedback.innerHTML = '<span class="mini-spinner" style="width:16px;height:16px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px;"></span> ' + t('cdk_checking');
         cdkFeedback.classList.add('cdk-checking');
 
         try {
@@ -409,8 +434,7 @@ function initRenewForm() {
             const data = await response.json();
 
             if (!response.ok) {
-                // API returned error (e.g. INVALID_CODE)
-                cdkFeedback.innerHTML = '❌ ' + (data.message || 'Mã CDK không hợp lệ hoặc không tồn tại.');
+                cdkFeedback.innerHTML = t('cdk_invalid');
                 cdkFeedback.className = 'cdk-feedback cdk-error';
                 document.getElementById('cdk-input').classList.add('input-error');
                 document.getElementById('cdk-input').classList.remove('input-valid');
@@ -418,79 +442,67 @@ function initRenewForm() {
             }
 
             if (data.status === 'available') {
-                // CDK is valid and unused
-                cdkFeedback.innerHTML = '✅ Mã CDK hợp lệ và chưa sử dụng.';
+                cdkFeedback.innerHTML = t('cdk_valid');
                 cdkFeedback.className = 'cdk-feedback cdk-valid';
                 document.getElementById('cdk-input').classList.add('input-valid');
                 document.getElementById('cdk-input').classList.remove('input-error');
-                
-                // Move to next step after brief delay
                 setTimeout(() => goToStep(2), 600);
 
             } else if (data.status === 'completed' || data.status === 'processing' || data.status === 'pending') {
-                // CDK already used
-                const statusMsg = {
-                    completed: 'Mã CDK này đã được sử dụng.',
-                    processing: 'Mã CDK này đang được xử lý.',
-                    pending: 'Mã CDK này đang chờ xử lý.'
-                };
-                cdkFeedback.innerHTML = '⚠️ ' + (statusMsg[data.status] || 'Mã CDK đã được sử dụng.');
+                const statusKey = { completed: 'cdk_used_completed', processing: 'cdk_used_processing', pending: 'cdk_used_pending' };
+                cdkFeedback.innerHTML = t(statusKey[data.status] || 'cdk_used_default');
                 cdkFeedback.className = 'cdk-feedback cdk-used';
                 document.getElementById('cdk-input').classList.add('input-error');
                 document.getElementById('cdk-input').classList.remove('input-valid');
 
             } else if (data.status === 'failed') {
-                // CDK was used but failed - might be retryable
-                cdkFeedback.innerHTML = '⚠️ Mã CDK này đã xử lý thất bại trước đó. Liên hệ hỗ trợ.';
+                cdkFeedback.innerHTML = t('cdk_failed');
                 cdkFeedback.className = 'cdk-feedback cdk-used';
                 document.getElementById('cdk-input').classList.add('input-error');
                 document.getElementById('cdk-input').classList.remove('input-valid');
 
             } else {
-                // Unknown status
-                cdkFeedback.innerHTML = '❌ Không thể xác minh mã CDK. Vui lòng thử lại.';
+                cdkFeedback.innerHTML = t('cdk_verify_fail');
                 cdkFeedback.className = 'cdk-feedback cdk-error';
             }
 
         } catch (error) {
             if (error.message && (error.message.includes('INVALID_CODE') || error.message.includes('not found'))) {
-                cdkFeedback.innerHTML = '❌ Mã CDK không hợp lệ hoặc không tồn tại.';
+                cdkFeedback.innerHTML = t('cdk_invalid');
                 cdkFeedback.className = 'cdk-feedback cdk-error';
                 document.getElementById('cdk-input').classList.add('input-error');
             } else {
-                cdkFeedback.innerHTML = '❌ Lỗi kết nối. Vui lòng thử lại.';
+                cdkFeedback.innerHTML = t('cdk_conn_error');
                 cdkFeedback.className = 'cdk-feedback cdk-error';
             }
         } finally {
             btnNext1.disabled = false;
-            btnNext1.innerHTML = 'Tiếp tục <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+            btnNext1.innerHTML = '<span data-i18n="btn_next">' + t('btn_next') + '</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
         }
     });
 
     btnNext2.addEventListener('click', () => {
         const session = document.getElementById('session-input').value.trim();
         if (!session) {
-            showToast('Vui lòng nhập Session Data', 'error');
+            showToast(t('toast_enter_session'), 'error');
             document.getElementById('session-input').focus();
             return;
         }
 
-        // Validate JSON
         try {
             sessionDataParsed = JSON.parse(session);
             if (!sessionDataParsed.accessToken) {
-                showToast('Session data phải chứa accessToken', 'error');
+                showToast(t('toast_session_token'), 'error');
                 return;
             }
         } catch (e) {
-            showToast('Session data không đúng định dạng JSON', 'error');
+            showToast(t('toast_session_json'), 'error');
             return;
         }
 
-        // Fill confirm info
         const cdk = document.getElementById('cdk-input').value.trim();
         document.getElementById('confirm-cdk').textContent = maskCDK(cdk);
-        document.getElementById('confirm-email').textContent = sessionDataParsed.user?.email || 'Không xác định';
+        document.getElementById('confirm-email').textContent = sessionDataParsed.user?.email || 'N/A';
         document.getElementById('confirm-plan').textContent = sessionDataParsed.account?.planType || 'free';
 
         goToStep(3);
@@ -573,11 +585,10 @@ async function submitOrder() {
         const result = await response.json();
 
         if (!response.ok) {
-            throw new Error(result.message || 'Có lỗi xảy ra khi gửi yêu cầu');
+            throw new Error(result.message || t('submit_error'));
         }
 
-        // Poll for status
-        document.getElementById('processing-msg').textContent = 'Đơn hàng đang được xử lý, vui lòng chờ...';
+        document.getElementById('processing-msg').textContent = t('poll_waiting');
 
         await pollStatus(cdk, timer, progressInterval, progressEl, 'renew');
 
@@ -620,13 +631,13 @@ async function pollStatus(cdk, timer, progressInterval, progressEl, mode) {
             if (data.status === 'failed') {
                 clearInterval(timer);
                 clearInterval(progressInterval);
-                throw new Error(data.message || `Lỗi: ${data.error}`);
+                throw new Error(data.message || data.error);
             }
 
             if (attempt >= maxAttempts) {
                 clearInterval(timer);
                 clearInterval(progressInterval);
-                throw new Error('Hết thời gian chờ. Vui lòng kiểm tra trạng thái đơn hàng qua mục Tra cứu CDK.');
+                throw new Error(t('poll_timeout'));
             }
 
             // Continue polling
@@ -650,7 +661,7 @@ function showSuccess(mode, data) {
         let details = '';
         if (data.email) details += `<div class="detail-row"><span class="detail-label">Email:</span><span class="detail-value">${data.email}</span></div>`;
         if (data.uniqueCode) details += `<div class="detail-row"><span class="detail-label">CDK:</span><span class="detail-value">${maskCDK(data.uniqueCode)}</span></div>`;
-        details += `<div class="detail-row"><span class="detail-label">Trạng thái:</span><span class="detail-value" style="color: var(--accent-primary)">✅ Hoàn thành</span></div>`;
+        details += `<div class="detail-row"><span class="detail-label">${t('th_status')}:</span><span class="detail-value" style="color: var(--accent-primary)">✅ ${t('status_completed')}</span></div>`;
         document.getElementById('success-details').innerHTML = details;
     } else {
         document.getElementById('quick-processing').classList.add('hidden');
@@ -659,10 +670,10 @@ function showSuccess(mode, data) {
 
         let details = '';
         if (data.email) details += `<div class="detail-row"><span class="detail-label">Email:</span><span class="detail-value">${data.email}</span></div>`;
-        details += `<div class="detail-row"><span class="detail-label">Trạng thái:</span><span class="detail-value" style="color: var(--accent-primary)">✅ Hoàn thành</span></div>`;
+        details += `<div class="detail-row"><span class="detail-label">${t('th_status')}:</span><span class="detail-value" style="color: var(--accent-primary)">✅ ${t('status_completed')}</span></div>`;
         document.getElementById('quick-success-details').innerHTML = details;
     }
-    showToast('Nâng cấp thành công! 🎉', 'success');
+    showToast(t('toast_upgrade_ok'), 'success');
 }
 
 function showError(mode, message) {
@@ -675,7 +686,7 @@ function showError(mode, message) {
         document.getElementById('quick-error').classList.remove('hidden');
         document.getElementById('quick-error-message').textContent = message;
     }
-    showToast('Có lỗi xảy ra', 'error');
+    showToast(t('toast_error'), 'error');
 }
 
 // Reset renew form
@@ -708,19 +719,18 @@ function initQuickForm() {
         const session = document.getElementById('quick-session').value.trim();
 
         if (!cdk || !session) {
-            showToast('Vui lòng nhập đầy đủ thông tin', 'error');
+            showToast(t('toast_enter_all'), 'error');
             return;
         }
 
-        // Validate JSON
         try {
             const parsed = JSON.parse(session);
             if (!parsed.accessToken) {
-                showToast('Session data phải chứa accessToken', 'error');
+                showToast(t('toast_session_token'), 'error');
                 return;
             }
         } catch (e) {
-            showToast('Session data không đúng định dạng JSON', 'error');
+            showToast(t('toast_session_json'), 'error');
             return;
         }
 
@@ -761,7 +771,7 @@ function initQuickForm() {
             const result = await response.json();
 
             if (!response.ok) {
-                throw new Error(result.message || 'Có lỗi xảy ra');
+                throw new Error(result.message || t('toast_error'));
             }
 
             await pollStatus(cdk, timer, progressInterval, progressEl, 'quick');
@@ -798,7 +808,7 @@ function initLookupForm() {
 
         const raw = document.getElementById('lookup-cdk').value.trim();
         if (!raw) {
-            showToast('Vui lòng nhập CDK code', 'error');
+            showToast(t('toast_enter_cdk'), 'error');
             return;
         }
 
@@ -806,7 +816,7 @@ function initLookupForm() {
         const uniqueCdks = [...new Set(cdkList)];
 
         if (uniqueCdks.length === 0) {
-            showToast('Vui lòng nhập ít nhất 1 mã CDK', 'error');
+            showToast(t('toast_enter_cdk'), 'error');
             return;
         }
 
@@ -857,14 +867,14 @@ function initLookupForm() {
             }
 
             if (cdks.length === 0) {
-                showToast('Không có CDK nào thuộc nhóm này', 'info');
+                showToast(t('toast_none'), 'info');
                 return;
             }
 
             navigator.clipboard.writeText(cdks.join('\n')).then(() => {
-                showToast(`Đã sao chép ${cdks.length} mã CDK!`, 'success');
+                showToast(t('toast_copied').replace('{n}', cdks.length), 'success');
             }).catch(() => {
-                showToast('Không thể sao chép', 'error');
+                showToast(t('toast_copy_fail'), 'error');
             });
         });
     });
